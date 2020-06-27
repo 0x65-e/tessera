@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Dice">
+
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:key="roll_history_switch"
+            android:summary="@string/history_pref_summary"
+            android:title="@string/history_pref_title" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:key="verbose_roll_switch"
+            android:summary="@string/verbose_pref_summary"
+            android:title="@string/verbose_pref_title" />
+
+        <EditTextPreference
+            android:id="@+id/customRollPref"
+            android:key="custom_roll"
+            android:title="Set Custom Roll"
+            android:summary="Set custom roll for the favorite button"/>
+
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="Theme">
+
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:key="dark_theme_enable"
+            android:title="@string/dark_theme_title"
+            android:summaryOn="@string/dark_theme_summary"
+            android:summaryOff="@string/red_theme_summary"/>
+
+    </PreferenceCategory>
+
+
+</androidx.preference.PreferenceScreen>

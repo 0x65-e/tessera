@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">Dice Roller</string>
+    <string name="app_name_dark">Dice Roller Night</string>
+    <string name="action_settings">Settings</string>
+
+    <string-array name="dice">
+        <item>d4</item>
+        <item>d6</item>
+        <item>d8</item>
+        <item>d10</item>
+        <item>d12</item>
+        <item>d20</item>
+    </string-array>
+    <string-array name="dice_values">
+        <item>4</item>
+        <item>6</item>
+        <item>8</item>
+        <item>10</item>
+        <item>12</item>
+        <item>20</item>
+    </string-array>
+    <string name="d8">d8</string>
+    <string name="d6">d6</string>
+    <string name="d4">d4</string>
+    <string name="d10">d10</string>
+    <string name="d12">d12</string>
+    <string name="d20">d20</string>
+
+
+    <string name="edit_num"># of dice</string>
+    <string name="edit_mod">Modifier</string>
+    <string name="history_pref_summary">Display past rolls below current results</string>
+    <string name="history_pref_title">Keep roll history</string>
+    <string name="verbose_pref_summary">Display each roll when rolling multiple dice</string>
+    <string name="verbose_pref_title">Expand roll output</string>
+    <string name="dark_theme_title">Enable Dark Theme</string>
+    <string name="red_theme_summary">Using Raspberry Theme</string>
+    <string name="dark_theme_summary">Using Dark Theme</string>
+
+    <string name="title_activity_overall_settings">Settings</string>
+
+</resources>
