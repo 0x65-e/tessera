@@ -4,8 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import com.example.diceroller.SettingsFragment;
-
 public class SettingsActivity extends AppCompatActivity {
 
     public static final String ROLL_PREF_SWITCH = "roll_history_switch";
