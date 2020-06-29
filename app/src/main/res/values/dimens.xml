@@ -1,3 +1,6 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="calc_margin">64dp</dimen>
+    <dimen name="calc_text_size">28sp</dimen>
+    <dimen name="calc_num_size">32sp</dimen>
 </resources>
