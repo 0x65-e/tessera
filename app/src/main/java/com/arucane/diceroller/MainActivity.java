@@ -13,9 +13,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.preference.PreferenceManager;
+import androidx.viewpager.widget.ViewPager;
 
+import com.arucane.diceroller.fragments.SectionsPagerAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,19 +36,27 @@ public class MainActivity extends AppCompatActivity {
     int customMod = 0;
     String customDiceCode;
 
+    private ViewPager vPager;
+    private TabLayout tabLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        vPager = findViewById(R.id.pager);
+        tabLayout = findViewById(R.id.tabLayout);
+        vPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager()));
+        tabLayout.setupWithViewPager(vPager);
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         rollHistory = sharedPref.getBoolean(SettingsActivity.ROLL_PREF_SWITCH, false);
         verbose = sharedPref.getBoolean(SettingsActivity.VERBOSE_ROLL_SWITCH, true);
-        if (darkMode ^ sharedPref.getBoolean(SettingsActivity.DARK_MODE_SWITCH, false)) {
+        if (darkMode != sharedPref.getBoolean(SettingsActivity.DARK_MODE_SWITCH, false)) {
             darkMode = sharedPref.getBoolean(SettingsActivity.DARK_MODE_SWITCH, false);
             Toast.makeText(this, "Dark Mode Changed", Toast.LENGTH_SHORT).show();
             switchMode();
@@ -95,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        final Button d20 = findViewById(R.id.d20);
+        /*final Button d20 = findViewById(R.id.d20);
         final Button d6 = findViewById(R.id.d6);
         final Button d8 = findViewById(R.id.d8);
         final Button d10 = findViewById(R.id.d10);
@@ -138,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                     resultsView.setText(out);
                 }
             });
-        }
+        }*/
     }
 
     @Override

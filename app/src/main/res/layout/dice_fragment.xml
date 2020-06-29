@@ -3,10 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".MainActivity"
-    tools:showIn="@layout/activity_main">
+    android:layout_height="match_parent">
 
     <Button style="@style/Widget.AppCompat.Button.Colored"
         android:id="@+id/d4"
@@ -20,7 +17,8 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:drawableLeft="@drawable/tetrahedron_small"/>
+        android:drawableLeft="@drawable/tetrahedron_small"
+        android:drawableStart="@drawable/tetrahedron_small" />
 
     <Button style="@style/Widget.AppCompat.Button.Colored"
         android:id="@+id/d6"
@@ -33,7 +31,8 @@
         app:layout_constraintEnd_toStartOf="@+id/d8"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/d4"
-        android:drawableLeft="@drawable/cube_small" />
+        android:drawableLeft="@drawable/cube_small"
+        android:drawableStart="@drawable/cube_small" />
 
     <Button style="@style/Widget.AppCompat.Button.Colored"
         android:id="@+id/d8"
@@ -48,7 +47,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/d6"
-        android:drawableLeft="@drawable/octahedron_small"/>
+        android:drawableLeft="@drawable/octahedron_small"
+        android:drawableStart="@drawable/octahedron_small" />
 
     <Button style="@style/Widget.AppCompat.Button.Colored"
         android:id="@+id/d10"
@@ -62,7 +62,8 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/d4"
-        android:drawableLeft="@drawable/pent_trapez_small"/>
+        android:drawableLeft="@drawable/pent_trapez_small"
+        android:drawableStart="@drawable/pent_trapez_small" />
 
     <Button style="@style/Widget.AppCompat.Button.Colored"
         android:id="@+id/d12"
@@ -75,7 +76,8 @@
         app:layout_constraintEnd_toStartOf="@+id/d20"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/d10"
-        android:drawableLeft="@drawable/dodecahedron_small"/>
+        android:drawableLeft="@drawable/dodecahedron_small"
+        android:drawableStart="@drawable/dodecahedron_small" />
 
     <Button style="@style/Widget.AppCompat.Button.Colored"
         android:id="@+id/d20"
@@ -91,7 +93,8 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/d12"
         tools:text="@string/d20"
-        android:drawableLeft="@drawable/icosahedron_small"/>
+        android:drawableLeft="@drawable/icosahedron_small"
+        android:drawableStart="@drawable/icosahedron_small" />
 
     <TextView
         android:id="@+id/results"
@@ -124,7 +127,8 @@
         app:layout_constraintEnd_toStartOf="@+id/modifier"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/d10" />
+        app:layout_constraintTop_toBottomOf="@+id/d10"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/modifier"
@@ -141,6 +145,7 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/numDice"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/numDice" />
+        app:layout_constraintStart_toEndOf="@+id/numDice"
+        android:importantForAutofill="no"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

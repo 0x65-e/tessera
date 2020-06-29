@@ -37,6 +37,8 @@
     <string name="red_theme_summary">Using Raspberry Theme</string>
     <string name="dark_theme_summary">Using Dark Theme</string>
 
+    <string name="test">TEST FRAGMENT STRING</string>
+
     <string name="title_activity_overall_settings">Settings</string>
 
 </resources>
