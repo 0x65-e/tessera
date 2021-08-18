@@ -1,18 +1,30 @@
 package com.arucane.diceroller.fragments;
 
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.arucane.diceroller.MainActivity;
 import com.arucane.diceroller.R;
+import com.arucane.diceroller.util.Die;
+import com.arucane.diceroller.util.Roller;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CalculatorFragment extends Fragment {
@@ -98,11 +110,95 @@ public class CalculatorFragment extends Fragment {
         });
 
         calc_submit.setOnClickListener(buttonView -> {
+            StringBuilder expandedResults = new StringBuilder();
+            int sum = 0;
+            boolean valid = true;
             // Validate terms
             for (String term : terms) {
+                // Ignore empty terms
+                if (term.equals(""))
+                    continue;
+
                 if (term.endsWith("d")) {
-                    // problem
+                    // problem, we need a die to roll
+                    valid = false;
+                    break;
                 }
+                String[] components = term.split("d");
+                if (components.length > 2) {
+                    // problem, we have more than one die code
+                    valid = false;
+                    break;
+                } else if (components.length == 2) {
+                    // Quick fix for codes with blank number of rolls
+                    if (components[0].equals("") || components[0].equals("-") || components[0].equals("+"))
+                        components[0] += "1";
+
+                    int numRolls = Math.abs(Integer.parseInt(components[0]));
+                    int max = Integer.parseInt(components[1]);
+
+                    // Ignore rolls with zero dice
+                    if (numRolls == 0)
+                        continue;
+
+                    // Roll
+                    Die[] dice = new Die[numRolls];
+                    for (int i = 0; i < numRolls; i++) {
+                        dice[i] = new Die(max);
+                    }
+                    int[] results = Roller.results(dice);
+                    // Account for sign
+                    if (term.startsWith("-")) {
+                        expandedResults.append("-");
+                        sum -= Roller.sum(results);
+                    } else if (term.startsWith("+")) {
+                        expandedResults.append("+");
+                        sum += Roller.sum(results);
+                    } else {
+                        sum += Roller.sum(results);
+                    }
+                    expandedResults.append(Arrays.toString(results));
+                } else {
+                    // Prevent double signs or signs at the end of terms
+                    if (term.equals("+") || term.equals("-")) {
+                        valid = false;
+                        break;
+                    }
+                    // Must be a single string with no d, therefore a static bonus
+                    sum += Integer.parseInt(term);
+                    expandedResults.append(term);
+                }
+            }
+
+            if (!valid) {
+                Snackbar.make(view, "Invalid Dice Code", Snackbar.LENGTH_SHORT).show();
+            } else {
+                // inflate the layout of the popup window
+                //LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
+                View popupView = inflater.inflate(R.layout.result_popup, null);
+
+                // create the popup window
+                int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+                int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                final PopupWindow popupWindow = new PopupWindow(popupView, width, height, true);
+                ((TextView)popupWindow.getContentView().findViewById(R.id.result_sum)).setText(String.valueOf(sum));
+
+                if (MainActivity.verbose) {
+                    ((TextView)popupWindow.getContentView().findViewById(R.id.result_breakdown)).setText(expandedResults.toString());
+                }
+
+                // Styling for drop shadow
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    popupWindow.setElevation(20);
+                }
+                popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+                // dismiss the popup window when touched
+                popupView.setOnTouchListener((v, event) -> {
+                    v.performClick();
+                    popupWindow.dismiss();
+                    return true;
+                });
             }
         });
 
