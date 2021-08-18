@@ -1,6 +1,6 @@
 package com.arucane.diceroller.util;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public final class Roller {
@@ -17,7 +17,7 @@ public final class Roller {
         return out;
     }
 
-    public static int[] results(ArrayList<Die> dice) {
+    public static int[] results(List<Die> dice) {
         int[] out = new int[dice.size()];
         for (int i = 0; i < out.length; i++) out[i] = roll(dice.get(i));
         return out;
