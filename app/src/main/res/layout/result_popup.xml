@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimaryDark">
+    android:background="?attr/colorPrimaryDark">
 
     <TextView
         android:id="@+id/result_sum"
@@ -16,7 +16,7 @@
         android:layout_marginBottom="10dp"
         android:textSize="48sp"
         android:gravity="center_horizontal"
-        android:textColor="@color/activityBackground"/>
+        android:textColor="?darkButtonTextColor"/>
 
     <TextView
         android:id="@+id/result_breakdown"
@@ -29,6 +29,6 @@
         android:textSize="12sp"
         android:gravity="center_horizontal"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/activityBackground"/>
+        android:textColor="?darkButtonTextColor"/>
 
 </RelativeLayout>

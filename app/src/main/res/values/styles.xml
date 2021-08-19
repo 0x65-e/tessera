@@ -1,4 +1,5 @@
 <resources>
+    <attr name="darkButtonTextColor" format="reference" />
 
     <!-- Base application theme. -->
     <style name="AppThemeRed" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -8,6 +9,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <item name="android:windowBackground">@color/activityBackground</item>
+        <item name="darkButtonTextColor">@color/activityBackground</item>
     </style>
 
     <style name="AppThemeDark" parent="Theme.AppCompat">
@@ -15,8 +17,8 @@
         <item name="colorPrimaryDark">@color/darkThemeDark</item>
         <item name="colorAccent">@color/darkThemeAccent</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+        <item name="darkButtonTextColor">@color/activityBackgroundDark</item>
     </style>
-
 
     <style name="AppThemeDark.NoActionBar" parent="AppThemeDark">
         <item name="windowActionBar">false</item>

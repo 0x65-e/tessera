@@ -20,7 +20,7 @@
         android:text="@string/d2"
         android:textSize="@dimen/calc_text_size"
         android:background="@drawable/button_outline"
-        android:textColor="@color/activityBackground"
+        android:textColor="?darkButtonTextColor"
         app:layout_constraintTop_toBottomOf="@id/calc_preview"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/calc_d3" />
@@ -32,7 +32,7 @@
         android:text="@string/d3"
         android:textSize="@dimen/calc_text_size"
         android:background="@drawable/button_outline"
-        android:textColor="@color/activityBackground"
+        android:textColor="?darkButtonTextColor"
         app:layout_constraintBaseline_toBaselineOf="@id/calc_d2"
         app:layout_constraintStart_toEndOf="@id/calc_d2"
         app:layout_constraintEnd_toStartOf="@id/calc_d4" />
@@ -44,7 +44,7 @@
         android:text="@string/d4"
         android:textSize="@dimen/calc_text_size"
         android:background="@drawable/button_outline"
-        android:textColor="@color/activityBackground"
+        android:textColor="?darkButtonTextColor"
         app:layout_constraintBaseline_toBaselineOf="@id/calc_d2"
         app:layout_constraintStart_toEndOf="@id/calc_d3"
         app:layout_constraintEnd_toStartOf="@id/calc_d6" />
@@ -56,7 +56,7 @@
         android:text="@string/d6"
         android:textSize="@dimen/calc_text_size"
         android:background="@drawable/button_outline"
-        android:textColor="@color/activityBackground"
+        android:textColor="?darkButtonTextColor"
         app:layout_constraintBaseline_toBaselineOf="@id/calc_d2"
         app:layout_constraintStart_toEndOf="@id/calc_d4"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -69,7 +69,7 @@
         android:text="@string/d8"
         android:textSize="@dimen/calc_text_size"
         android:background="@drawable/button_outline"
-        android:textColor="@color/activityBackground"
+        android:textColor="?darkButtonTextColor"
         app:layout_constraintTop_toBottomOf="@id/calc_d2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/calc_d10" />
@@ -81,7 +81,7 @@
         android:text="@string/d10"
         android:textSize="@dimen/calc_text_size"
         android:background="@drawable/button_outline"
-        android:textColor="@color/activityBackground"
+        android:textColor="?darkButtonTextColor"
         app:layout_constraintBaseline_toBaselineOf="@id/calc_d8"
         app:layout_constraintStart_toEndOf="@id/calc_d8"
         app:layout_constraintEnd_toStartOf="@id/calc_d12" />
@@ -93,7 +93,7 @@
         android:text="@string/d12"
         android:textSize="@dimen/calc_text_size"
         android:background="@drawable/button_outline"
-        android:textColor="@color/activityBackground"
+        android:textColor="?darkButtonTextColor"
         app:layout_constraintBaseline_toBaselineOf="@id/calc_d8"
         app:layout_constraintStart_toEndOf="@id/calc_d10"
         app:layout_constraintEnd_toStartOf="@id/calc_d20" />
@@ -105,7 +105,7 @@
         android:text="@string/d20"
         android:textSize="@dimen/calc_text_size"
         android:background="@drawable/button_outline"
-        android:textColor="@color/activityBackground"
+        android:textColor="?darkButtonTextColor"
         app:layout_constraintBaseline_toBaselineOf="@id/calc_d8"
         app:layout_constraintStart_toEndOf="@id/calc_d12"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -118,7 +118,7 @@
         android:text="@string/d100"
         android:textSize="@dimen/calc_text_size"
         android:background="@drawable/button_outline"
-        android:textColor="@color/activityBackground"
+        android:textColor="?darkButtonTextColor"
         app:layout_constraintTop_toBottomOf="@id/calc_d8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/calc_dN" />
@@ -130,7 +130,7 @@
         android:text="@string/dN"
         android:textSize="@dimen/calc_text_size"
         android:background="@drawable/button_outline"
-        android:textColor="@color/activityBackground"
+        android:textColor="?darkButtonTextColor"
         app:layout_constraintBaseline_toBaselineOf="@id/calc_d100"
         app:layout_constraintStart_toEndOf="@id/calc_d100"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -280,7 +280,7 @@
         android:layout_height="0dp"
         android:background="@drawable/button_outline"
         android:text="@string/roll"
-        android:textColor="@color/activityBackground"
+        android:textColor="?darkButtonTextColor"
         android:textSize="@dimen/calc_text_size"
         android:layout_marginTop="@dimen/calc_margin"
         app:layout_constraintEnd_toStartOf="@id/calc_clear"
@@ -296,7 +296,7 @@
         android:layout_height="0dp"
         android:background="@drawable/button_outline"
         android:text="@string/clear"
-        android:textColor="@color/activityBackground"
+        android:textColor="?darkButtonTextColor"
         android:textSize="@dimen/calc_text_size"
         android:layout_marginTop="@dimen/calc_margin"
         app:layout_constraintEnd_toEndOf="parent"
