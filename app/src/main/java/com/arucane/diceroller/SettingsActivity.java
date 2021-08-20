@@ -1,7 +1,9 @@
 package com.arucane.diceroller;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -13,6 +15,16 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Correct theming for settings page
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean darkMode = sharedPref.getBoolean(SettingsActivity.DARK_MODE_SWITCH, false);
+        if (darkMode) {
+            setTheme(R.style.AppThemeDark);
+        } else {
+            setTheme(R.style.AppThemeRed);
+        }
+
         super.onCreate(savedInstanceState);
         getSupportFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new SettingsFragment())

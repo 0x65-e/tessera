@@ -41,6 +41,18 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Theme (and thus preferences) has to come before super.onCreate
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        rollHistory = sharedPref.getBoolean(SettingsActivity.ROLL_PREF_SWITCH, false);
+        verbose = sharedPref.getBoolean(SettingsActivity.VERBOSE_ROLL_SWITCH, true);
+        darkMode = sharedPref.getBoolean(SettingsActivity.DARK_MODE_SWITCH, false);
+        if (darkMode) {
+            setTheme(R.style.AppThemeDark_NoActionBar);
+        } else {
+            setTheme(R.style.AppThemeRed_NoActionBar);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -51,15 +63,8 @@ public class MainActivity extends AppCompatActivity {
         vPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager()));
         tabLayout.setupWithViewPager(vPager);
 
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        rollHistory = sharedPref.getBoolean(SettingsActivity.ROLL_PREF_SWITCH, false);
-        verbose = sharedPref.getBoolean(SettingsActivity.VERBOSE_ROLL_SWITCH, true);
-        if (darkMode != sharedPref.getBoolean(SettingsActivity.DARK_MODE_SWITCH, false)) {
-            darkMode = sharedPref.getBoolean(SettingsActivity.DARK_MODE_SWITCH, false);
-            Toast.makeText(this, "Dark Mode Changed", Toast.LENGTH_SHORT).show();
-            switchMode();
-        }
+
+
         //Toast.makeText(this, "Roll history " + ((rollHistory) ? "activated" : "deactivated"), Toast.LENGTH_SHORT).show(); // Only want to update this when setting changes
         customDiceCode = sharedPref.getString(SettingsActivity.CUSTOM_ROLL, "").replaceAll("[^dD0-9+-]", "");
 
@@ -123,10 +128,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void switchMode() {
-        // Should switch styles
     }
 
     private boolean decodeCustomRoll(String code) {
