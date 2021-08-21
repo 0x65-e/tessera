@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="HardcodedText"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/advcalc_preview"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"
+        android:textSize="@dimen/calc_num_size" />
+
+    <!-- First row -->
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_d2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/d2"
+        android:textSize="@dimen/calc_text_size"
+        android:background="@drawable/dark_transparent_outline"
+        android:textColor="?darkButtonTextColor"
+        app:layout_constraintTop_toBottomOf="@id/advcalc_preview"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/advcalc_d3" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_d3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/d3"
+        android:textSize="@dimen/calc_text_size"
+        android:background="@drawable/dark_transparent_outline"
+        android:textColor="?darkButtonTextColor"
+        app:layout_constraintBaseline_toBaselineOf="@id/advcalc_d2"
+        app:layout_constraintStart_toEndOf="@id/advcalc_d2"
+        app:layout_constraintEnd_toStartOf="@id/advcalc_d4" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_d4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/d4"
+        android:textSize="@dimen/calc_text_size"
+        android:background="@drawable/dark_transparent_outline"
+        android:textColor="?darkButtonTextColor"
+        app:layout_constraintBaseline_toBaselineOf="@id/advcalc_d2"
+        app:layout_constraintStart_toEndOf="@id/advcalc_d3"
+        app:layout_constraintEnd_toStartOf="@id/advcalc_d6" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_d6"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/d6"
+        android:textSize="@dimen/calc_text_size"
+        android:background="@drawable/dark_transparent_outline"
+        android:textColor="?darkButtonTextColor"
+        app:layout_constraintBaseline_toBaselineOf="@id/advcalc_d2"
+        app:layout_constraintStart_toEndOf="@id/advcalc_d4"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Second row -->
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_d8"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/d8"
+        android:textSize="@dimen/calc_text_size"
+        android:background="@drawable/dark_transparent_outline"
+        android:textColor="?darkButtonTextColor"
+        app:layout_constraintTop_toBottomOf="@id/advcalc_d2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/advcalc_d10" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_d10"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/d10"
+        android:textSize="@dimen/calc_text_size"
+        android:background="@drawable/dark_transparent_outline"
+        android:textColor="?darkButtonTextColor"
+        app:layout_constraintBaseline_toBaselineOf="@id/advcalc_d8"
+        app:layout_constraintStart_toEndOf="@id/advcalc_d8"
+        app:layout_constraintEnd_toStartOf="@id/advcalc_d12" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_d12"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/d12"
+        android:textSize="@dimen/calc_text_size"
+        android:background="@drawable/dark_transparent_outline"
+        android:textColor="?darkButtonTextColor"
+        app:layout_constraintBaseline_toBaselineOf="@id/advcalc_d8"
+        app:layout_constraintStart_toEndOf="@id/advcalc_d10"
+        app:layout_constraintEnd_toStartOf="@id/advcalc_d20" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_d20"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/d20"
+        android:textSize="@dimen/calc_text_size"
+        android:background="@drawable/dark_transparent_outline"
+        android:textColor="?darkButtonTextColor"
+        app:layout_constraintBaseline_toBaselineOf="@id/advcalc_d8"
+        app:layout_constraintStart_toEndOf="@id/advcalc_d12"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Third row -->
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_d100"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/d100"
+        android:textSize="@dimen/calc_text_size"
+        android:background="@drawable/dark_transparent_outline"
+        android:textColor="?darkButtonTextColor"
+        app:layout_constraintTop_toBottomOf="@id/advcalc_d8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/advcalc_dN" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_dN"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/dN"
+        android:textSize="@dimen/calc_text_size"
+        android:background="@drawable/dark_transparent_outline"
+        android:textColor="?darkButtonTextColor"
+        app:layout_constraintBaseline_toBaselineOf="@id/advcalc_d100"
+        app:layout_constraintStart_toEndOf="@id/advcalc_d100"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Calculator panel -->
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_7"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="7"
+        android:textSize="@dimen/calc_num_size"
+        app:layout_constraintTop_toBottomOf="@id/advcalc_d100"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/advcalc_8" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_8"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="8"
+        android:textSize="@dimen/calc_num_size"
+        app:layout_constraintBaseline_toBaselineOf="@id/advcalc_7"
+        app:layout_constraintStart_toEndOf="@id/advcalc_7"
+        app:layout_constraintEnd_toStartOf="@id/advcalc_9" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_9"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="9"
+        android:textSize="@dimen/calc_num_size"
+        app:layout_constraintBaseline_toBaselineOf="@id/advcalc_7"
+        app:layout_constraintEnd_toStartOf="@id/advcalc_keep_low"
+        app:layout_constraintStart_toEndOf="@id/advcalc_8" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_keep_low"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="kl"
+        android:textSize="@dimen/calc_num_size"
+        android:background="@drawable/left_border"
+        android:padding="10dp"
+        app:layout_constraintBaseline_toBaselineOf="@id/advcalc_7"
+        app:layout_constraintStart_toEndOf="@id/advcalc_9"
+        app:layout_constraintEnd_toStartOf="@id/advcalc_keep_high" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_keep_high"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="kh"
+        android:textSize="@dimen/calc_num_size"
+        app:layout_constraintBaseline_toBaselineOf="@id/advcalc_7"
+        app:layout_constraintStart_toEndOf="@id/advcalc_keep_low"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="4"
+        android:textSize="@dimen/calc_num_size"
+        app:layout_constraintTop_toBottomOf="@id/advcalc_7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/advcalc_5" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="5"
+        android:textSize="@dimen/calc_num_size"
+        app:layout_constraintBaseline_toBaselineOf="@id/advcalc_4"
+        app:layout_constraintStart_toEndOf="@id/advcalc_4"
+        app:layout_constraintEnd_toStartOf="@id/advcalc_6" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_6"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="6"
+        android:textSize="@dimen/calc_num_size"
+        app:layout_constraintBaseline_toBaselineOf="@id/advcalc_4"
+        app:layout_constraintStart_toEndOf="@id/advcalc_5"
+        app:layout_constraintEnd_toStartOf="@id/advcalc_drop_low" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_drop_low"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="dl"
+        android:textSize="@dimen/calc_num_size"
+        android:background="@drawable/left_border"
+        android:padding="10dp"
+        app:layout_constraintBaseline_toBaselineOf="@id/advcalc_4"
+        app:layout_constraintStart_toEndOf="@id/advcalc_6"
+        app:layout_constraintEnd_toStartOf="@id/advcalc_drop_high" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_drop_high"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="dh"
+        android:textSize="@dimen/calc_num_size"
+        app:layout_constraintBaseline_toBaselineOf="@id/advcalc_4"
+        app:layout_constraintStart_toEndOf="@id/advcalc_drop_low"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:textSize="@dimen/calc_num_size"
+        app:layout_constraintTop_toBottomOf="@id/advcalc_4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/advcalc_2" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="2"
+        android:textSize="@dimen/calc_num_size"
+        app:layout_constraintBaseline_toBaselineOf="@id/advcalc_1"
+        app:layout_constraintStart_toEndOf="@id/advcalc_1"
+        app:layout_constraintEnd_toStartOf="@id/advcalc_3" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="3"
+        android:textSize="@dimen/calc_num_size"
+        app:layout_constraintBaseline_toBaselineOf="@id/advcalc_1"
+        app:layout_constraintStart_toEndOf="@id/advcalc_2"
+        app:layout_constraintEnd_toStartOf="@id/advcalc_reroll" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_reroll"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="r"
+        android:textSize="@dimen/calc_num_size"
+        android:background="@drawable/left_border"
+        android:padding="10dp"
+        app:layout_constraintBaseline_toBaselineOf="@id/advcalc_1"
+        app:layout_constraintStart_toEndOf="@id/advcalc_3"
+        app:layout_constraintEnd_toStartOf="@id/advcalc_reroll_continuous" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_reroll_continuous"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="rr"
+        android:textSize="@dimen/calc_num_size"
+        app:layout_constraintBaseline_toBaselineOf="@id/advcalc_1"
+        app:layout_constraintStart_toEndOf="@id/advcalc_reroll"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_minus"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="-"
+        android:textSize="@dimen/calc_num_size"
+        android:background="@drawable/bottom_border"
+        android:padding="10dp"
+        app:layout_constraintTop_toBottomOf="@id/advcalc_1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/advcalc_0" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_0"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textSize="@dimen/calc_num_size"
+        android:background="@drawable/bottom_border"
+        android:padding="10dp"
+        app:layout_constraintBaseline_toBaselineOf="@id/advcalc_minus"
+        app:layout_constraintStart_toEndOf="@id/advcalc_minus"
+        app:layout_constraintEnd_toStartOf="@id/advcalc_plus" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_plus"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="+"
+        android:textSize="@dimen/calc_num_size"
+        android:background="@drawable/bottom_border"
+        android:padding="10dp"
+        app:layout_constraintBaseline_toBaselineOf="@id/advcalc_minus"
+        app:layout_constraintStart_toEndOf="@id/advcalc_0"
+        app:layout_constraintEnd_toStartOf="@id/advcalc_explode" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_explode"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="x"
+        android:textSize="@dimen/calc_num_size"
+        android:background="@drawable/left_border"
+        android:padding="10dp"
+        app:layout_constraintBaseline_toBaselineOf="@id/advcalc_minus"
+        app:layout_constraintStart_toEndOf="@id/advcalc_plus"
+        app:layout_constraintEnd_toStartOf="@id/advcalc_explode_continuously" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_explode_continuously"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="xx"
+        android:textSize="@dimen/calc_num_size"
+        app:layout_constraintBaseline_toBaselineOf="@id/advcalc_minus"
+        app:layout_constraintStart_toEndOf="@id/advcalc_explode"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_greaterthan"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="&gt;"
+        android:textSize="@dimen/calc_num_size"
+        app:layout_constraintTop_toBottomOf="@id/advcalc_minus"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/advcalc_lessthan" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_lessthan"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="&lt;"
+        android:textSize="@dimen/calc_num_size"
+        app:layout_constraintBaseline_toBaselineOf="@id/advcalc_greaterthan"
+        app:layout_constraintStart_toEndOf="@id/advcalc_greaterthan"
+        app:layout_constraintEnd_toStartOf="@id/advcalc_greaterthan_equal" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_greaterthan_equal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="≥"
+        android:textSize="@dimen/calc_num_size"
+        app:layout_constraintBaseline_toBaselineOf="@id/advcalc_greaterthan"
+        app:layout_constraintStart_toEndOf="@id/advcalc_lessthan"
+        app:layout_constraintEnd_toStartOf="@id/advcalc_lessthan_equal" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_lessthan_equal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="≤"
+        android:textSize="@dimen/calc_num_size"
+        app:layout_constraintBaseline_toBaselineOf="@id/advcalc_greaterthan"
+        app:layout_constraintStart_toEndOf="@id/advcalc_greaterthan_equal"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_min"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="min"
+        android:textSize="@dimen/calc_num_size"
+        app:layout_constraintTop_toBottomOf="@id/advcalc_greaterthan"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/advcalc_max" />
+
+    <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/advcalc_max"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="max"
+        android:textSize="@dimen/calc_num_size"
+        app:layout_constraintBaseline_toBaselineOf="@id/advcalc_min"
+        app:layout_constraintStart_toEndOf="@id/advcalc_min"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Submit button -->
+    <Button
+        android:id="@+id/advcalc_submit"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/dark_transparent_outline"
+        android:text="@string/roll"
+        android:textColor="?darkButtonTextColor"
+        android:textSize="@dimen/calc_text_size"
+        app:layout_constraintEnd_toStartOf="@id/advcalc_clear"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/advcalc_min"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <!-- Clear button -->
+    <Button
+        android:id="@+id/advcalc_clear"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/dark_transparent_outline"
+        android:text="@string/clear"
+        android:textColor="?darkButtonTextColor"
+        android:textSize="@dimen/calc_text_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/advcalc_submit"
+        app:layout_constraintTop_toBottomOf="@id/advcalc_max" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
