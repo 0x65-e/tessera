@@ -1,10 +1,7 @@
 package com.arucane.diceroller.fragments;
 
-import static android.content.Context.LAYOUT_INFLATER_SERVICE;
-
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,14 +16,16 @@ import androidx.fragment.app.Fragment;
 
 import com.arucane.diceroller.MainActivity;
 import com.arucane.diceroller.R;
-import com.arucane.diceroller.util.Die;
+import com.arucane.diceroller.util.DiceGroup;
 import com.arucane.diceroller.util.Roller;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Fragment that contains calculator-like buttons to create complex dice codes
+ */
 public class CalculatorFragment extends Fragment {
 
     List<String> terms = new ArrayList<>();
@@ -142,11 +141,8 @@ public class CalculatorFragment extends Fragment {
                         continue;
 
                     // Roll
-                    Die[] dice = new Die[numRolls];
-                    for (int i = 0; i < numRolls; i++) {
-                        dice[i] = new Die(max);
-                    }
-                    int[] results = Roller.results(dice);
+                    DiceGroup group = new DiceGroup(numRolls, max);
+                    List<Integer> results = Roller.results(group);
                     // Account for sign
                     if (term.startsWith("-")) {
                         expandedResults.append("-");
@@ -157,7 +153,7 @@ public class CalculatorFragment extends Fragment {
                     } else {
                         sum += Roller.sum(results);
                     }
-                    expandedResults.append(Arrays.toString(results));
+                    expandedResults.append(results.toString());
                 } else {
                     // Prevent double signs or signs at the end of terms
                     if (term.equals("+") || term.equals("-")) {

@@ -11,13 +11,16 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.arucane.diceroller.MainActivity;
-import com.arucane.diceroller.util.Die;
+import com.arucane.diceroller.util.DiceGroup;
 import com.arucane.diceroller.R;
 import com.arucane.diceroller.util.Roller;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
+/**
+ * Fragment containing simple pictorial dice buttons with a single number and modifier input
+ */
 public class DiceFragment extends Fragment {
 
     @Override
@@ -39,26 +42,25 @@ public class DiceFragment extends Fragment {
                 int max = Integer.parseInt(button_text.getText().subSequence(1, button_text.getText().length()).toString());
                 // Parse the number of rolls
                 String rollsIn = ((TextView)view.findViewById(R.id.numDice)).getText().toString();
-                int rolls = (rollsIn.length() > 0) ? Integer.parseInt(rollsIn) : 0; // Fix for if nothing is entered
+                int rolls = (rollsIn.length() > 0) ? Integer.parseInt(rollsIn) : 1; // Fix for if nothing is entered
                 if (rolls < 1) rolls = 1;
-                Die[] dice1 = new Die[rolls];
-                for (int i = 0; i < rolls; i++) dice1[i] = new Die(max);
+                DiceGroup group = new DiceGroup(rolls, max);
                 // Parse the modifier
                 String modIn = ((TextView)view.findViewById(R.id.modifier)).getText().toString();
                 int mod = (modIn.length() > 0) ? Integer.parseInt(modIn) : 0; // Fix for if nothing is entered
 
                 // Calculate rolls
-                int[] results = Roller.results(dice1);
+                List<Integer> results = Roller.results(group);
                 int sum = Roller.sum(results) + mod;
 
                 TextView resultsView = view.findViewById(R.id.results);
 
-                String out = String.format(Locale.getDefault(), "Results: %d (%dd%d", sum, results.length, max);
+                String out = String.format(Locale.getDefault(), "Results: %d (%dd%d", sum, results.size(), max);
                 if (mod > 0 ) out += "+" + mod;
                 else if (mod < 0) out += mod;
                 out += ")";
 
-                if (results.length > 1 && MainActivity.verbose) out += "\n" + Arrays.toString(results);
+                if (results.size() > 1 && MainActivity.verbose) out += "\n" + results.toString();
 
                 if (MainActivity.rollHistory) out += "\n\n" + resultsView.getText().subSequence(8, resultsView.getText().length()); // Add the history if the results history is on
 

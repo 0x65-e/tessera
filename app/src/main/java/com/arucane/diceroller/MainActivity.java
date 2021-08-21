@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,14 +14,14 @@ import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.arucane.diceroller.fragments.SectionsPagerAdapter;
-import com.arucane.diceroller.util.Die;
+import com.arucane.diceroller.util.DiceGroup;
 import com.arucane.diceroller.util.Roller;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     public static boolean verbose;
     static boolean darkMode = false;
 
-    ArrayList<Die> customDice = new ArrayList<>();
+    List<DiceGroup> customDice = new ArrayList<>();
     int customMod = 0;
     String customDiceCode;
 
@@ -72,36 +71,55 @@ public class MainActivity extends AppCompatActivity {
 
         // TODO: wrap decodeCustomRoll in a try/catch statement and erase setting if it fails
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (vPager.getCurrentItem() == 0) {
-                    // If the custom roll isn't valid, FAB shouldn't work
-                    if (decodeCustomRoll(customDiceCode)) {
-                        Toast.makeText(getApplicationContext(), "Rolled " + customDiceCode, Toast.LENGTH_SHORT).show();
+        fab.setOnClickListener(view -> {
+            if (vPager.getCurrentItem() == 0) {
+                // If the custom roll isn't valid, FAB shouldn't work
+                if (decodeCustomRoll(customDiceCode)) {
+                    Toast.makeText(getApplicationContext(), "Rolled " + customDiceCode, Toast.LENGTH_SHORT).show();
 
-                        int[] results = Roller.results(customDice);
-                        int sum = Roller.sum(results) + customMod;
-
-                        TextView resultsView = findViewById(R.id.results);
-                        String out = String.format(Locale.getDefault(), "Results: %d (%s)", sum, customDiceCode);
-                        if (results.length > 1 && verbose) out += "\n" + Arrays.toString(results);
-                        if (rollHistory)
-                            out += "\n\n" + resultsView.getText().subSequence(8, resultsView.getText().length()); // Add the history if the results history is on
-                        resultsView.setText(out);
-                    } else {
-                        Snackbar.make(view, "Custom dice code not set", Snackbar.LENGTH_SHORT)
-                                .setAction("SET", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-                                        startActivity(intent); // Launch the preferences screen
-                                    }
-                                }).show();
+                    List<List<Integer>> results = Roller.results(customDice);
+                    int sum = customMod;
+                    for (int i = 0; i < customDice.size(); i++) {
+                        // Account for negative dice groups
+                        if (customDice.get(i).getNumRolls() < 0)
+                            sum -= Roller.sum(results.get(i));
+                        else
+                            sum += Roller.sum(results.get(i));
                     }
+
+                    TextView resultsView = findViewById(R.id.results);
+                    String out = String.format(Locale.getDefault(), "Results: %d (%s)", sum, customDiceCode);
+                    // Always show roll results if there is more than one DiceGroup
+                    if (verbose && results.size() > 1) {
+                        StringBuilder sb = new StringBuilder("\n");
+                        for (int i = 0; i < customDice.size(); i++) {
+                            if (customDice.get(i).getNumRolls() < 0)
+                                sb.append("-");
+                            else if (i > 0)
+                                sb.append("+");
+                            sb.append(results.get(i).toString());
+                        }
+                        out += sb.toString();
+                    }
+                    // Show roll results if there is only one DiceGroup with multiple dice
+                    else if (verbose && results.size() == 1 && results.get(0).size() > 0) {
+                        out += "\n" + ((customDice.get(0).getNumRolls() < 0) ? "-" : "") + results.get(0).toString();
+                    }
+                    // Don't show roll results for a single DiceGroup with a single die
+
+                    // Add the history if the results history is on
+                    if (rollHistory)
+                        out += "\n\n" + resultsView.getText().subSequence(8, resultsView.getText().length());
+                    resultsView.setText(out);
                 } else {
-                    Snackbar.make(view, "Not implemented yet", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(view, "Custom dice code not set", Snackbar.LENGTH_SHORT)
+                            .setAction("SET", snackView -> {
+                                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                                startActivity(intent); // Launch the preferences screen
+                            }).show();
                 }
+            } else {
+                Snackbar.make(view, "Not implemented yet", Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -141,11 +159,9 @@ public class MainActivity extends AppCompatActivity {
                 if (temp[0].length() == 0) temp[0] = "1";
                 else if (temp[0].length() == 1 && temp[0].charAt(0) == '-') temp[0] = "-1";
                 else if (temp[0].length() == 1 && temp[0].charAt(0) == '+') temp[0] = "1";
-                int num = Math.abs(Integer.parseInt(temp[0]));
+                int num = Integer.parseInt(temp[0]);
                 int max = Integer.parseInt(temp[1]);
-                for (int j = 0; j < num; j++) {
-                    customDice.add(new Die((int)Math.copySign(max, Integer.parseInt(temp[0])))); // Allow for subtracting dice
-                }
+                customDice.add(new DiceGroup(num, max));
             } else { // it's a modifier
                 customMod += Integer.parseInt(parts[i]);
             }
