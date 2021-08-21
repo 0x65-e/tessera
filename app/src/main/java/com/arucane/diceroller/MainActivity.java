@@ -15,7 +15,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.arucane.diceroller.fragments.SectionsPagerAdapter;
 import com.arucane.diceroller.util.DiceGroup;
-import com.arucane.diceroller.util.Roller;
+import com.arucane.diceroller.util.RollEngine;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
@@ -77,14 +77,14 @@ public class MainActivity extends AppCompatActivity {
                 if (decodeCustomRoll(customDiceCode)) {
                     Toast.makeText(getApplicationContext(), "Rolled " + customDiceCode, Toast.LENGTH_SHORT).show();
 
-                    List<List<Integer>> results = Roller.results(customDice);
+                    List<List<Integer>> results = RollEngine.results(customDice);
                     int sum = customMod;
                     for (int i = 0; i < customDice.size(); i++) {
                         // Account for negative dice groups
                         if (customDice.get(i).getNumRolls() < 0)
-                            sum -= Roller.sum(results.get(i));
+                            sum -= RollEngine.sum(results.get(i));
                         else
-                            sum += Roller.sum(results.get(i));
+                            sum += RollEngine.sum(results.get(i));
                     }
 
                     TextView resultsView = findViewById(R.id.results);

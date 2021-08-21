@@ -8,14 +8,14 @@ import java.util.Random;
  * Class to encapsulate all sources of randomness for the app. Mostly static methods to operate on
  * DiceGroups to produce (pseudo-)random die rolls
  */
-public final class Roller {
+public final class RollEngine {
 
     // One source of randomness for the entire program
     // allows for modification in the future to a "better" source of randomness
     static Random rand = new Random();
 
     // No need to have an instance of this class
-    private Roller() { }
+    private RollEngine() { }
 
     /**
      * Roll a DiceGroup and return the results as a List of Integers

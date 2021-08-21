@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 import com.arucane.diceroller.MainActivity;
 import com.arucane.diceroller.util.DiceGroup;
 import com.arucane.diceroller.R;
-import com.arucane.diceroller.util.Roller;
+import com.arucane.diceroller.util.RollEngine;
 
 import java.util.List;
 import java.util.Locale;
@@ -50,8 +50,8 @@ public class DiceFragment extends Fragment {
                 int mod = (modIn.length() > 0) ? Integer.parseInt(modIn) : 0; // Fix for if nothing is entered
 
                 // Calculate rolls
-                List<Integer> results = Roller.results(group);
-                int sum = Roller.sum(results) + mod;
+                List<Integer> results = RollEngine.results(group);
+                int sum = RollEngine.sum(results) + mod;
 
                 TextView resultsView = view.findViewById(R.id.results);
 

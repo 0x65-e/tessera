@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment;
 import com.arucane.diceroller.MainActivity;
 import com.arucane.diceroller.R;
 import com.arucane.diceroller.util.DiceGroup;
-import com.arucane.diceroller.util.Roller;
+import com.arucane.diceroller.util.RollEngine;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -142,16 +142,16 @@ public class CalculatorFragment extends Fragment {
 
                     // Roll
                     DiceGroup group = new DiceGroup(numRolls, max);
-                    List<Integer> results = Roller.results(group);
+                    List<Integer> results = RollEngine.results(group);
                     // Account for sign
                     if (term.startsWith("-")) {
                         expandedResults.append("-");
-                        sum -= Roller.sum(results);
+                        sum -= RollEngine.sum(results);
                     } else if (term.startsWith("+")) {
                         expandedResults.append("+");
-                        sum += Roller.sum(results);
+                        sum += RollEngine.sum(results);
                     } else {
-                        sum += Roller.sum(results);
+                        sum += RollEngine.sum(results);
                     }
                     expandedResults.append(results.toString());
                 } else {
