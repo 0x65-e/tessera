@@ -25,9 +25,17 @@ public final class RollEngine {
     public static List<Integer> results(DiceGroup dice) {
         List<Integer> results = new ArrayList<>(Math.abs(dice.getNumRolls()));
         for (int i = 0; i < Math.abs(dice.getNumRolls()); i++) results.add(roll(dice.getMax()));
+        // Remember to apply any relevant filters the DiceGroup requires
+        results = dice.applyFilters(results);
         return results;
     }
 
+    /**
+     * Roll a List of DiceGroups and return a List with a separate List for the  results of each one,
+     * as though they had been individually rolled with results(group)
+     * @param groups List of DiceGroups to roll
+     * @return List of die results
+     */
     public static List<List<Integer>> results(List<DiceGroup> groups) {
         List<List<Integer>> results = new ArrayList<>();
         for (DiceGroup group : groups) {
@@ -37,6 +45,11 @@ public final class RollEngine {
         return results;
     }
 
+    /**
+     * Convenience method for summing the elements in a List of die results
+     * @param lst List of integers to sum
+     * @return Sum of all elements
+     */
     public static int sum(List<Integer> lst) {
         int sum = 0;
         for (Integer i : lst) sum += i;
