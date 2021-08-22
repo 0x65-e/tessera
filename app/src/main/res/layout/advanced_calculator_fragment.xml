@@ -282,10 +282,10 @@
         android:padding="10dp"
         app:layout_constraintBaseline_toBaselineOf="@id/advcalc_1"
         app:layout_constraintStart_toEndOf="@id/advcalc_3"
-        app:layout_constraintEnd_toStartOf="@id/advcalc_reroll_continuous" />
+        app:layout_constraintEnd_toStartOf="@id/advcalc_reroll_continuously" />
 
     <Button style="@style/Widget.AppCompat.Button.Borderless.Colored"
-        android:id="@+id/advcalc_reroll_continuous"
+        android:id="@+id/advcalc_reroll_continuously"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="rr"
