@@ -3,6 +3,12 @@
     <string name="app_name_dark">Dice Roller Night</string>
     <string name="action_settings">Settings</string>
 
+    <string-array name="fragment_titles">
+        <item>Dice</item>
+        <item>Calculator</item>
+        <item>Advanced</item>
+    </string-array>
+
     <string-array name="dice">
         <item>d4</item>
         <item>d6</item>
