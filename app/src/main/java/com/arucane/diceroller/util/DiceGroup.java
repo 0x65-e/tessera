@@ -30,12 +30,32 @@ public class DiceGroup {
     }
 
     /**
+     * Set the number of rolls in this DiceGroup
+     * @param numRolls number of dice to roll when evaluating
+     */
+    public void setNumRolls(int numRolls) {
+        this.numRolls = numRolls;
+    }
+
+    /**
      * Get the maximum value the die can roll
      * @return maximum value (i.e. the highest face on the die)
      */
-    public int getMax() {
+    public int getDieMax() {
         return max;
     }
+
+    /**
+     * Set the maximum value of the die
+     * @param max maximum value (i.e. the highest face on the die)
+     */
+    public void setDieMax(int max) {
+        this.max = max;
+    }
+
+    ////////////////////////////
+    // Group Filters
+    ////////////////////////////
 
     /**
      * Add a new filter to be applied to the results of a roll. Filters are applied in the order

@@ -24,7 +24,7 @@ public final class RollEngine {
      */
     public static List<Integer> results(DiceGroup dice) {
         List<Integer> results = new ArrayList<>(Math.abs(dice.getNumRolls()));
-        for (int i = 0; i < Math.abs(dice.getNumRolls()); i++) results.add(roll(dice.getMax()));
+        for (int i = 0; i < Math.abs(dice.getNumRolls()); i++) results.add(roll(dice.getDieMax()));
         // Remember to apply any relevant filters the DiceGroup requires
         results = dice.applyFilters(results);
         return results;
