@@ -24,7 +24,7 @@ public final class RollEngine {
      */
     public static List<Integer> results(DiceGroup dice) {
         List<Integer> results = new ArrayList<>(Math.abs(dice.getNumRolls()));
-        for (int i = 0; i < Math.abs(dice.getNumRolls()); i++) results.add(roll(dice.getDieMax()));
+        if (dice.getMaxVal() != 0) for (int i = 0; i < Math.abs(dice.getNumRolls()); i++) results.add(roll(dice.getMaxVal()));
         // Remember to apply any relevant filters the DiceGroup requires
         results = dice.applyFilters(results);
         return results;
@@ -34,7 +34,7 @@ public final class RollEngine {
      * Roll a List of DiceGroups and return a List with a separate List for the  results of each one,
      * as though they had been individually rolled with results(group)
      * @param groups List of DiceGroups to roll
-     * @return List of die results
+     * @return List of die results. Guaranteed to be the same length as groups.
      */
     public static List<List<Integer>> results(List<DiceGroup> groups) {
         List<List<Integer>> results = new ArrayList<>();

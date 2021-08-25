@@ -7,17 +7,18 @@ import java.util.List;
  * Class to hold information about a group of similar dice, e.g. 6d8 or 3d4
  */
 public class DiceGroup {
-    int numRolls, max;
+    int numRolls, maxVal;
     List<Filter> filters;
 
     /**
-     * Create a new group of dice. To subtract values, use a negative number parameter. Max must not be negative or zero.
+     * Create a new group of dice. To subtract values, use a negative numRolls parameter.
+     * Max must not be negative or zero. A zero maxVal will not be evaluated by RollEngine.
      * @param numRolls The number of dice to roll
-     * @param max The maximum value the die can roll
+     * @param maxVal The maximum value the die can roll
      */
-    public DiceGroup(int numRolls, int max) {
+    public DiceGroup(int numRolls, int maxVal) {
         this.numRolls = numRolls;
-        this.max = Math.abs(max);
+        this.maxVal = Math.abs(maxVal);
         this.filters = new ArrayList<>();
     }
 
@@ -41,16 +42,16 @@ public class DiceGroup {
      * Get the maximum value the die can roll
      * @return maximum value (i.e. the highest face on the die)
      */
-    public int getDieMax() {
-        return max;
+    public int getMaxVal() {
+        return maxVal;
     }
 
     /**
      * Set the maximum value of the die
-     * @param max maximum value (i.e. the highest face on the die)
+     * @param maxVal maximum value (i.e. the highest face on the die)
      */
-    public void setDieMax(int max) {
-        this.max = max;
+    public void setMaxVal(int maxVal) {
+        this.maxVal = maxVal;
     }
 
     ////////////////////////////
