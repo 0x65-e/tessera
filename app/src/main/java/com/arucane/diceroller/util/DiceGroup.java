@@ -11,14 +11,15 @@ public class DiceGroup {
     List<Filter> filters;
 
     /**
-     * Create a new group of dice. To subtract values, use a negative numRolls parameter.
-     * Max must not be negative or zero. A zero maxVal will not be evaluated by RollEngine.
+     * Create a new group of dice. To subtract values, use a negative numRolls parameter. Negative
+     * maxVal or numRolls will be treated as positive, but the original negative value will be returned
+     * by the respective get methods. A zero maxVal or numRolls will not be evaluated by RollEngine.
      * @param numRolls The number of dice to roll
      * @param maxVal The maximum value the die can roll
      */
     public DiceGroup(int numRolls, int maxVal) {
         this.numRolls = numRolls;
-        this.maxVal = Math.abs(maxVal);
+        this.maxVal = maxVal;
         this.filters = new ArrayList<>();
     }
 

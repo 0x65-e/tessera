@@ -61,6 +61,6 @@ public final class RollEngine {
     ////////////////////////////
 
     private static int roll(int max) {
-        return rand.nextInt(max) + 1;
+        return rand.nextInt(Math.abs(max)) + 1;
     }
 }

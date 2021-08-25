@@ -90,8 +90,14 @@ public class CalculatorFragment extends Fragment {
                     modifier.set(1);
                     isDN.set(false);
                 }
+                // Add a plus if we have two dice in a row
+                if (lastPressed.get() == ButtonTypes.DIE) {
+                    previewText.append("+");
+                    modifier.set(1);
+                }
                 terms.add(new DiceGroup(modifier.get(), dieMax));
                 lastPressed.set(ButtonTypes.DIE);
+                // TODO: button lockouts
                 // disable other dice buttons, enable numbers and operators and roll
                 // Update the preview
                 previewText.append(((TextView)buttonView).getText());
@@ -100,20 +106,25 @@ public class CalculatorFragment extends Fragment {
             });
         }
 
-        Button[] simpleCalc = { calc0, calc1, calc2, calc3, calc4, calc5, calc6, calc7, calc8, calc9 };
+        final Button[] simpleCalc = { calc0, calc1, calc2, calc3, calc4, calc5, calc6, calc7, calc8, calc9 };
 
         for (int i = 0; i < simpleCalc.length; i++) {
             // effectively final local variables for onClickListener
-            ButtonTypes finalLastPressed = lastPressed.get();
             int finalI = i; // only works as a shorthand for the numerical value because buttons are in increasing order!
             simpleCalc[i].setOnClickListener(buttonView -> {
-                switch (finalLastPressed) {
+                switch (lastPressed.get()) {
                     case DIE:
+                        previewText.append("+");
                     case DN: // save max val in modifier until a new group is started explicitly
                         modifier.set(finalI);
                         break;
                     case NUMBER: // working on a multi-digit number of rolls or max dN value
-                        modifier.set(modifier.get() * 10 + finalI);
+                        // don't care about race conditions between modifier.get() and modifier.set()
+                        // because two onClickHandlers shouldn't be hit fast enough. If they are, then
+                        // just reset and try again.
+                        int currentMod = modifier.get();
+                        if (currentMod < 0) modifier.set(currentMod * 10 - finalI);
+                        else modifier.set(currentMod * 10 + finalI);
                         break;
                     case OPERATION:
                         modifier.set(modifier.get() * finalI); // multiply to copy sign, either -1 or +1
@@ -129,8 +140,20 @@ public class CalculatorFragment extends Fragment {
         }
 
         dN.setOnClickListener(buttonView -> {
+            // Save the previous dN if we're working on one
+            if (isDN.get()) {
+                previewText.append("+");
+                terms.get(terms.size()-1).setMaxVal(modifier.get());
+                modifier.set(1);
+            }
+            // Add a plus if we have two dice in a row
+            if (lastPressed.get() == ButtonTypes.DIE) {
+                previewText.append("+");
+                modifier.set(1);
+            }
             terms.add(new DiceGroup(modifier.get(), 0)); // assigning zero temporarily
             isDN.set(true);
+            lastPressed.set(ButtonTypes.DN);
             // disable other dice buttons and operators and roll, enable numbers (except zero)
             // Update the preview
             previewText.append("d");
@@ -200,7 +223,7 @@ public class CalculatorFragment extends Fragment {
                     int numRolls = terms.get(i).getNumRolls();
                     if (numRolls == 0) {
                         // Static mod
-                        if (expandedResults.length() > 0 && maxVal > 0) expandedResults.append("+");
+                        if (expandedResults.length() > 0 && maxVal >= 0) expandedResults.append("+");
                         expandedResults.append(maxVal);
                         sum += maxVal;
                     } else {
@@ -243,8 +266,13 @@ public class CalculatorFragment extends Fragment {
             }
 
             // Remove an extra term from unfinished modifier
-            if (lastPressed.get() == ButtonTypes.NUMBER && !isDN.get()) {
-                terms.remove(terms.size()-1);
+            if (lastPressed.get() == ButtonTypes.NUMBER) {
+                if (isDN.get()) {
+                    // reset the dN. Not necessary, but it may help later for parsing
+                    terms.get(terms.size() - 1).setMaxVal(0);
+                } else {
+                    terms.remove(terms.size() - 1);
+                }
             }
         });
 
