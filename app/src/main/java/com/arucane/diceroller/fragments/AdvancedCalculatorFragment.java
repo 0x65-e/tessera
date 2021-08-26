@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -61,8 +62,8 @@ public class AdvancedCalculatorFragment extends Fragment {
         final Button calc_plus = view.findViewById(R.id.advcalc_plus);
         final Button calc_minus = view.findViewById(R.id.advcalc_minus);
         // Control buttons
-        final Button calc_submit = view.findViewById(R.id.advcalc_submit);
-        final Button calc_clear = view.findViewById(R.id.advcalc_clear);
+        final Button calc_roll = view.findViewById(R.id.advcalc_roll);
+        final ImageButton calc_clear = view.findViewById(R.id.advcalc_clear);
         // Group filter buttons
         final Button keep_low = view.findViewById(R.id.advcalc_keep_low);
         final Button keep_high = view.findViewById(R.id.advcalc_keep_high);
@@ -126,7 +127,7 @@ public class AdvancedCalculatorFragment extends Fragment {
             updatePreview(preview);
         });
 
-        calc_submit.setOnClickListener(buttonView -> {
+        calc_roll.setOnClickListener(buttonView -> {
             StringBuilder expandedResults = new StringBuilder();
             int sum = 0;
             boolean valid = true;
