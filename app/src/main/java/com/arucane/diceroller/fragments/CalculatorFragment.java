@@ -66,8 +66,11 @@ public class CalculatorFragment extends Fragment {
         final Button calc_plus = view.findViewById(R.id.calc_plus);
         final Button calc_minus = view.findViewById(R.id.calc_minus);
         // Control buttons
-        final Button calc_submit = view.findViewById(R.id.calc_submit);
+        final Button calc_roll = view.findViewById(R.id.calc_roll);
         final Button calc_clear = view.findViewById(R.id.calc_clear);
+
+        calc_roll.setEnabled(false); // No rolling before any buttons are pressed
+        calc_plus.setEnabled(false); // Can't start with a plus either
 
         // TODO: backspace button?
 
@@ -78,6 +81,13 @@ public class CalculatorFragment extends Fragment {
 
         final Button[] simpleDice = { d2, d3, d4, d6, d8, d10, d12, d20, d100 };
         final int[] simpleDiceValues = { 2, 3, 4, 6, 8, 10, 12, 20, 100 };
+        final Button[] simpleCalc = { calc0, calc1, calc2, calc3, calc4, calc5, calc6, calc7, calc8, calc9 };
+        final Button[] operators = { calc_plus, calc_minus };
+        final int[] operatorValues = { 1, -1 };
+        // Arrays to make enable/disable easier
+        final Button[] dNArray = { dN };
+        final Button[] rollArray = { calc_roll };
+        final Button[] clearArray = { calc_clear };
 
         for (int i = 0; i < simpleDice.length; i++) {
             // effectively final local variables for onClickListener
@@ -97,16 +107,14 @@ public class CalculatorFragment extends Fragment {
                 }
                 terms.add(new DiceGroup(modifier.get(), dieMax));
                 lastPressed.set(ButtonTypes.DIE);
-                // TODO: button lockouts
-                // disable other dice buttons, enable numbers and operators and roll
+                // enable all buttons
+                enableButtons(simpleDice, dNArray, simpleCalc, operators, rollArray, clearArray);
                 // Update the preview
                 previewText.append(((TextView)buttonView).getText());
                 TextView preview = view.findViewById(R.id.calc_preview);
                 preview.setText(previewText.toString());
             });
         }
-
-        final Button[] simpleCalc = { calc0, calc1, calc2, calc3, calc4, calc5, calc6, calc7, calc8, calc9 };
 
         for (int i = 0; i < simpleCalc.length; i++) {
             // effectively final local variables for onClickListener
@@ -132,6 +140,7 @@ public class CalculatorFragment extends Fragment {
                 }
                 lastPressed.set(ButtonTypes.NUMBER);
                 // disable nothing, enable everything
+                enableButtons(simpleDice, dNArray, simpleCalc, operators, rollArray, clearArray);
                 // Update the preview
                 previewText.append(finalI);
                 TextView preview = view.findViewById(R.id.calc_preview);
@@ -155,14 +164,14 @@ public class CalculatorFragment extends Fragment {
             isDN.set(true);
             lastPressed.set(ButtonTypes.DN);
             // disable other dice buttons and operators and roll, enable numbers (except zero)
+            enableButtons(simpleCalc, clearArray);
+            disableButtons(simpleDice, dNArray, operators, rollArray);
+            calc0.setEnabled(false); // No dN starting with zero
             // Update the preview
             previewText.append("d");
             TextView preview = view.findViewById(R.id.calc_preview);
             preview.setText(previewText.toString());
         });
-
-        final Button[] operators = { calc_plus, calc_minus };
-        final int[] operatorValues = { 1, -1 };
 
         for (int i = 0; i < operators.length; i++) {
             int val = operatorValues[i];
@@ -178,6 +187,8 @@ public class CalculatorFragment extends Fragment {
                 modifier.set(val);
                 lastPressed.set(ButtonTypes.OPERATION);
                 // disable roll and operators, enable dice buttons and numbers
+                enableButtons(simpleDice, dNArray, simpleCalc, clearArray);
+                disableButtons(rollArray, operators);
                 // Update the preview
                 previewText.append(((TextView)buttonView).getText());
                 TextView preview = view.findViewById(R.id.calc_preview);
@@ -191,14 +202,17 @@ public class CalculatorFragment extends Fragment {
             isDN.set(false);
             lastPressed.set(ButtonTypes.OPERATION); // Should be fine as a default value
             modifier.set(1);
-            // enable all buttons? except roll
+            // enable all buttons except roll and plus
+            enableButtons(simpleDice, dNArray, simpleCalc, operators, clearArray);
+            disableButtons(rollArray);
+            calc_plus.setEnabled(false);
             // Update the preview
             previewText = new StringBuilder();
             TextView preview = view.findViewById(R.id.calc_preview);
             preview.setText(previewText.toString());
         });
 
-        calc_submit.setOnClickListener(buttonView -> {
+        calc_roll.setOnClickListener(buttonView -> {
             if (lastPressed.get() == ButtonTypes.NUMBER) {
                 if (isDN.get()) {
                     // finish the current dN
@@ -277,6 +291,14 @@ public class CalculatorFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private static void disableButtons(Button[]... buttons) {
+        for (Button[] barray : buttons) for (Button b : barray) b.setEnabled(false);
+    }
+
+    private static void enableButtons(Button[]... buttons) {
+        for (Button[] barray : buttons) for (Button b : barray) b.setEnabled(true);
     }
 
     public static Fragment getInstance(int position) {
