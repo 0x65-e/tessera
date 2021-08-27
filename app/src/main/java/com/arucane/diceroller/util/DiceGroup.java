@@ -71,6 +71,13 @@ public class DiceGroup {
     }
 
     /**
+     * Remove the last filter added
+     */
+    public void removeLastFilter() {
+        if (!filters.isEmpty()) filters.remove(filters.size()-1);
+    }
+
+    /**
      * Apply all filters added to this DiceGroup to the raw roll results and return the filtered results
      * @param results Initial roll results
      * @return New results after filtering
@@ -91,6 +98,7 @@ public class DiceGroup {
     public static Filter newDropLowestFilter(int numToDrop) {
         return rolls -> {
             if (rolls.size() <= numToDrop) {
+                Log.d("FILTER.DL", "Dropping: " + rolls.toString());
                 rolls.clear();
                 return rolls;
             }
@@ -105,7 +113,7 @@ public class DiceGroup {
                         position = j;
                     }
                 }
-                Log.d("FILTER.DL", rolls.remove(position).toString());
+                Log.d("FILTER.DL", "Dropping: " + rolls.remove(position).toString());
             }
             return rolls;
         };
@@ -119,6 +127,7 @@ public class DiceGroup {
     public static Filter newDropHighestFilter(int numToDrop) {
         return rolls -> {
             if (rolls.size() <= numToDrop) {
+                Log.d("FILTER.DL", "Dropping: " + rolls.toString());
                 rolls.clear();
                 return rolls;
             }
@@ -133,7 +142,7 @@ public class DiceGroup {
                         position = j;
                     }
                 }
-                Log.d("FILTER.DH", rolls.remove(position).toString());
+                Log.d("FILTER.DH", "Dropping: " + rolls.remove(position).toString());
             }
             return rolls;
         };
@@ -158,7 +167,7 @@ public class DiceGroup {
                         position = j;
                     }
                 }
-                Log.d("FILTER.KL", rolls.remove(position).toString());
+                Log.d("FILTER.KL", "Dropping: " + rolls.remove(position).toString());
             }
             return rolls;
         };
@@ -183,10 +192,31 @@ public class DiceGroup {
                         position = j;
                     }
                 }
-                Log.d("FILTER.KH", rolls.remove(position).toString());
+                Log.d("FILTER.KH", "Dropping: " + rolls.remove(position).toString());
             }
             return rolls;
         };
+    }
+
+    /**
+     * Return a new Filter based on the type
+     * @param type Type of Filter to create. Self-explanatory by name.
+     * @param num Single parameter to pass to Filter. Ignored in the case of Type.None
+     * @return Filter to apply to a DiceGroup
+     */
+    public static Filter newFilterFromType(Filter.Type type, int num) {
+        switch (type) {
+            case DropLowest:
+                return newDropLowestFilter(num);
+            case DropHighest:
+                return newDropHighestFilter(num);
+            case KeepLowest:
+                return newKeepLowestFilter(num);
+            case KeepHighest:
+                return newKeepHighestFilter(num);
+            default:
+                return rolls -> rolls;
+        }
     }
 
     public interface Filter {
@@ -196,5 +226,12 @@ public class DiceGroup {
          * @return New results after filtering
          */
         List<Integer> applyFilter(List<Integer> rolls);
+
+        enum Type {
+            DropLowest,
+            DropHighest,
+            KeepLowest,
+            KeepHighest
+        }
     }
 }
