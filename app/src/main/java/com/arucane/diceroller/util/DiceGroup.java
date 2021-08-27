@@ -1,5 +1,7 @@
 package com.arucane.diceroller.util;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,7 +105,7 @@ public class DiceGroup {
                         position = j;
                     }
                 }
-                rolls.remove(position);
+                Log.d("FILTER.DL", rolls.remove(position).toString());
             }
             return rolls;
         };
@@ -131,7 +133,57 @@ public class DiceGroup {
                         position = j;
                     }
                 }
-                rolls.remove(position);
+                Log.d("FILTER.DH", rolls.remove(position).toString());
+            }
+            return rolls;
+        };
+    }
+
+    /**
+     * Get a filter that will keep the specified number of rolls in ascending order
+     * @param numToKeep Number of rolls to keep
+     * @return Filter to apply to a DiceGroup
+     */
+    public static Filter newKeepLowestFilter(int numToKeep) {
+        return rolls -> {
+            int numToDrop = rolls.size() - numToKeep;
+            // Iterate through rolls numToDrop times, removing the highest element
+            // If numToKeep is greater than rolls.size(), we won't drop anything
+            for (int i = 0; i < numToDrop; i++) {
+                int highest = rolls.get(0);
+                int position = 0;
+                for (int j = 1; j < rolls.size(); j++) {
+                    if (rolls.get(j) > highest) {
+                        highest = rolls.get(j);
+                        position = j;
+                    }
+                }
+                Log.d("FILTER.KL", rolls.remove(position).toString());
+            }
+            return rolls;
+        };
+    }
+
+    /**
+     * Get a filter that will keep the specified number of rolls in descending order
+     * @param numToKeep Number of rolls to keep
+     * @return Filter to apply to a DiceGroup
+     */
+    public static Filter newKeepHighestFilter(int numToKeep) {
+        return rolls -> {
+            int numToDrop = rolls.size() - numToKeep;
+            // Iterate through rolls numToDrop times, removing the lowest element
+            // If numToKeep is greater than rolls.size(), we won't drop anything
+            for (int i = 0; i < numToDrop; i++) {
+                int lowest = rolls.get(0);
+                int position = 0;
+                for (int j = 1; j < rolls.size(); j++) {
+                    if (rolls.get(j) < lowest) {
+                        lowest = rolls.get(j);
+                        position = j;
+                    }
+                }
+                Log.d("FILTER.KH", rolls.remove(position).toString());
             }
             return rolls;
         };
