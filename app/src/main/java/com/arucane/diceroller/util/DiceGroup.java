@@ -234,4 +234,20 @@ public class DiceGroup {
             KeepHighest
         }
     }
+
+    public interface Modifier {
+        /**
+         * Accepts or rejects a given roll, possibly after modifying
+         * @param roll Initial roll result
+         * @return Possibly modified accepted value, or -1 for an unacceptable value
+         */
+        int accept(int roll);
+
+        enum Type {
+            MIN,
+            MAX,
+            REROLL,
+            EXPLODE
+        }
+    }
 }
