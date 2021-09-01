@@ -96,8 +96,10 @@ public class AdvancedCalculatorFragment extends Fragment {
         // Have to be atomic so that they can be modified in onClickListeners
         AtomicReference<ButtonTypes> lastPressed = new AtomicReference<>(ButtonTypes.OPERATION);
         AtomicBoolean isDN = new AtomicBoolean(false);
-        AtomicReference<DiceGroup.Filter.Type> filterType = new AtomicReference<>(DiceGroup.Filter.Type.KeepLowest); // default value doesn't really matter
-        AtomicBoolean isFilter = new AtomicBoolean(false);
+        AtomicReference<DiceGroup.Filter.Type> groupFilterType = new AtomicReference<>(DiceGroup.Filter.Type.KeepLowest); // default value doesn't really matter
+        AtomicBoolean isGroupFilter = new AtomicBoolean(false);
+        AtomicReference<DiceGroup.Modifier.Type> perDieModifierType = new AtomicReference<>(DiceGroup.Modifier.Type.MAX); // default value doesn't matter
+        AtomicBoolean isPerDieModifier = new AtomicBoolean(false);
         AtomicInteger modifier = new AtomicInteger(1);
 
         final Button[] simpleDice = { d2, d3, d4, d6, d8, d10, d12, d20, d100 };
@@ -111,6 +113,9 @@ public class AdvancedCalculatorFragment extends Fragment {
         final Button[] filters = { keep_low, keep_high, drop_low, drop_high };
         final DiceGroup.Filter.Type[] filterTypes = { DiceGroup.Filter.Type.KeepLowest, DiceGroup.Filter.Type.KeepHighest,
                 DiceGroup.Filter.Type.DropLowest, DiceGroup.Filter.Type.DropHighest };
+        final Button[] modifiers = { reroll, reroll_continuously, explode, explode_continuously, calc_min, calc_max };
+        final DiceGroup.Modifier.Type[] modifierTypes = { DiceGroup.Modifier.Type.REROLL, DiceGroup.Modifier.Type.EXPLODE,
+                DiceGroup.Modifier.Type.MIN, DiceGroup.Modifier.Type.MAX };
 
         for (int i = 0; i < simpleDice.length; i++) {
             // effectively final local variables for onClickListener
@@ -124,11 +129,11 @@ public class AdvancedCalculatorFragment extends Fragment {
                     isDN.set(false);
                 }
                 // Finalize the previous filter
-                if (isFilter.get()) {
+                if (isGroupFilter.get()) {
                     previewText.append("+");
-                    terms.get(terms.size()-1).addFilter(DiceGroup.newFilterFromType(filterType.get(), modifier.get()));
+                    terms.get(terms.size()-1).addFilter(DiceGroup.newFilterFromType(groupFilterType.get(), modifier.get()));
                     modifier.set(1);
-                    isFilter.set(false);
+                    isGroupFilter.set(false);
                 }
                 // Add a plus if we have two dice in a row
                 if (lastPressed.get() == ButtonTypes.DIE) {
@@ -172,7 +177,7 @@ public class AdvancedCalculatorFragment extends Fragment {
                 lastPressed.set(ButtonTypes.NUMBER);
                 // enable everything except filters, which should only follow a number if there is another filter or a dN
                 enableButtons(simpleDice, dNArray, simpleCalc, operators, rollArray);
-                if (isDN.get() || isFilter.get()) {
+                if (isDN.get() || isGroupFilter.get()) {
                     enableButtons(filters);
                 } else {
                     disableButtons(filters);
@@ -192,11 +197,11 @@ public class AdvancedCalculatorFragment extends Fragment {
                 modifier.set(1);
             }
             // Finalize the previous filter
-            if (isFilter.get()) {
+            if (isGroupFilter.get()) {
                 previewText.append("+");
-                terms.get(terms.size()-1).addFilter(DiceGroup.newFilterFromType(filterType.get(), modifier.get()));
+                terms.get(terms.size()-1).addFilter(DiceGroup.newFilterFromType(groupFilterType.get(), modifier.get()));
                 modifier.set(1);
-                isFilter.set(false);
+                isGroupFilter.set(false);
             }
             // Add a plus if we have two dice in a row
             if (lastPressed.get() == ButtonTypes.DIE) {
@@ -223,10 +228,10 @@ public class AdvancedCalculatorFragment extends Fragment {
                     // Save the dN if we're working on one
                     terms.get(terms.size() - 1).setMaxVal(modifier.get());
                     isDN.set(false);
-                } else if (isFilter.get()) {
+                } else if (isGroupFilter.get()) {
                     // Finalize the filter
-                    terms.get(terms.size()-1).addFilter(DiceGroup.newFilterFromType(filterType.get(), modifier.get()));
-                    isFilter.set(false);
+                    terms.get(terms.size()-1).addFilter(DiceGroup.newFilterFromType(groupFilterType.get(), modifier.get()));
+                    isGroupFilter.set(false);
                 } else if (lastPressed.get() == ButtonTypes.NUMBER) {
                     // If it's not a dN or a filter, it must be a static modifier
                     terms.add(new DiceGroup(0, modifier.get()));
@@ -253,13 +258,13 @@ public class AdvancedCalculatorFragment extends Fragment {
                     isDN.set(false);
                 }
                 // Finalize the previous filter
-                if (isFilter.get()) {
-                    terms.get(terms.size()-1).addFilter(DiceGroup.newFilterFromType(filterType.get(), modifier.get()));
+                if (isGroupFilter.get()) {
+                    terms.get(terms.size()-1).addFilter(DiceGroup.newFilterFromType(groupFilterType.get(), modifier.get()));
                 }
                 // Modifier will now track the number of dice to keep/drop
                 modifier.set(1);
-                isFilter.set(true);
-                filterType.set(finalType);
+                isGroupFilter.set(true);
+                groupFilterType.set(finalType);
                 lastPressed.set(ButtonTypes.FILTER);
                 // enable everything except zero
                 enableButtons(simpleDice, dNArray, simpleCalc, rollArray, operators, filters);
@@ -275,7 +280,7 @@ public class AdvancedCalculatorFragment extends Fragment {
         calc_clear.setOnClickListener(buttonView -> {
             terms.clear();
             isDN.set(false);
-            isFilter.set(false);
+            isGroupFilter.set(false);
             lastPressed.set(ButtonTypes.OPERATION); // Should be fine as a default value
             modifier.set(1);
             // enable all buttons except filters, roll, and plus
@@ -293,14 +298,14 @@ public class AdvancedCalculatorFragment extends Fragment {
                 if (isDN.get()) {
                     // finish the current dN
                     terms.get(terms.size() - 1).setMaxVal(modifier.get());
-                } else if (!isFilter.get()) {
+                } else if (!isGroupFilter.get()) {
                     // finish the current static mod
                     terms.add(new DiceGroup(0, modifier.get()));
                 }
             }
             // Finalize the filter if it's at the end
-            if (isFilter.get()) {
-                terms.get(terms.size()-1).addFilter(DiceGroup.newFilterFromType(filterType.get(), modifier.get()));
+            if (isGroupFilter.get()) {
+                terms.get(terms.size()-1).addFilter(DiceGroup.newFilterFromType(groupFilterType.get(), modifier.get()));
             }
             if ((isDN.get() && lastPressed.get() != ButtonTypes.NUMBER) || lastPressed.get() == ButtonTypes.OPERATION) { // Should never occur if buttons are enabled correctly
                 Snackbar.make(view, "Invalid Dice Code", Snackbar.LENGTH_SHORT).show();
@@ -364,12 +369,12 @@ public class AdvancedCalculatorFragment extends Fragment {
                 if (isDN.get()) {
                     // reset the dN. Not necessary, but it may help later for parsing
                     terms.get(terms.size() - 1).setMaxVal(0);
-                } else if (!isFilter.get()) {
+                } else if (!isGroupFilter.get()) {
                     terms.remove(terms.size() - 1);
                 }
             }
             // Remove the (potentially unfinished) filter if it's at the end
-            if (isFilter.get()) {
+            if (isGroupFilter.get()) {
                 terms.get(terms.size() - 1).removeLastFilter();
             }
         });
