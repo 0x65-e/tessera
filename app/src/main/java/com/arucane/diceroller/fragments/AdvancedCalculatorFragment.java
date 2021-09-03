@@ -88,9 +88,6 @@ public class AdvancedCalculatorFragment extends Fragment {
         final Button greater_than_equal = view.findViewById(R.id.advcalc_greaterthan_equal);
         final Button less_than_equal = view.findViewById(R.id.advcalc_lessthan_equal);
 
-        calc_roll.setEnabled(false); // No rolling before any buttons are pressed
-        calc_plus.setEnabled(false); // Can't start with a plus either
-
         // TODO: backspace button?
 
         // Have to be atomic so that they can be modified in onClickListeners
@@ -117,6 +114,10 @@ public class AdvancedCalculatorFragment extends Fragment {
         final DiceGroup.Modifier.Type[] modifierTypes = { DiceGroup.Modifier.Type.REROLL, DiceGroup.Modifier.Type.EXPLODE,
                 DiceGroup.Modifier.Type.MIN, DiceGroup.Modifier.Type.MAX };
 
+        // Disable modifiers/filters to start with
+        disableButtons(modifiers, filters, rollArray);
+        calc_plus.setEnabled(false); // Can't start with a plus either
+
         for (int i = 0; i < simpleDice.length; i++) {
             // effectively final local variables for onClickListener
             int dieMax = simpleDiceValues[i];
@@ -135,6 +136,23 @@ public class AdvancedCalculatorFragment extends Fragment {
                     modifier.set(1);
                     isGroupFilter.set(false);
                 }
+                // Finalize the per-die roll modifier
+                if (isPerDieModifier.get()) {
+                    previewText.append("+");
+                    switch (perDieModifierType.get()) {
+                        case MIN:
+                            terms.get(terms.size()-1).addModifier(DiceGroup.newMinModifier(modifier.get()));
+                            break;
+                        case MAX:
+                            terms.get(terms.size()-1).addModifier(DiceGroup.newMaxModifier(modifier.get()));
+                            break;
+                        default:
+                            terms.get(terms.size()-1).addModifier(roll -> roll);
+                            break;
+                    }
+                    modifier.set(1);
+                    isPerDieModifier.set(false);
+                }
                 // Add a plus if we have two dice in a row
                 if (lastPressed.get() == ButtonTypes.DIE) {
                     previewText.append("+");
@@ -143,7 +161,7 @@ public class AdvancedCalculatorFragment extends Fragment {
                 terms.add(new DiceGroup(modifier.get(), dieMax));
                 lastPressed.set(ButtonTypes.DIE);
                 // enable all buttons
-                enableButtons(simpleDice, dNArray, simpleCalc, operators, filters, rollArray);
+                enableButtons(simpleDice, dNArray, simpleCalc, operators, filters, modifiers, rollArray);
                 // Update the preview
                 previewText.append(((TextView)buttonView).getText());
                 TextView preview = view.findViewById(R.id.advcalc_preview);
@@ -177,10 +195,10 @@ public class AdvancedCalculatorFragment extends Fragment {
                 lastPressed.set(ButtonTypes.NUMBER);
                 // enable everything except filters, which should only follow a number if there is another filter or a dN
                 enableButtons(simpleDice, dNArray, simpleCalc, operators, rollArray);
-                if (isDN.get() || isGroupFilter.get()) {
-                    enableButtons(filters);
+                if (isDN.get() || isGroupFilter.get() || isPerDieModifier.get()) {
+                    enableButtons(filters, modifiers);
                 } else {
-                    disableButtons(filters);
+                    disableButtons(filters, modifiers);
                 }
                 // Update the preview
                 previewText.append(finalI);
@@ -203,6 +221,23 @@ public class AdvancedCalculatorFragment extends Fragment {
                 modifier.set(1);
                 isGroupFilter.set(false);
             }
+            // Finalize the per-die roll modifier
+            if (isPerDieModifier.get()) {
+                previewText.append("+");
+                switch (perDieModifierType.get()) {
+                    case MIN:
+                        terms.get(terms.size()-1).addModifier(DiceGroup.newMinModifier(modifier.get()));
+                        break;
+                    case MAX:
+                        terms.get(terms.size()-1).addModifier(DiceGroup.newMaxModifier(modifier.get()));
+                        break;
+                    default:
+                        terms.get(terms.size()-1).addModifier(roll -> roll);
+                        break;
+                }
+                modifier.set(1);
+                isPerDieModifier.set(false);
+            }
             // Add a plus if we have two dice in a row
             if (lastPressed.get() == ButtonTypes.DIE) {
                 previewText.append("+");
@@ -213,7 +248,7 @@ public class AdvancedCalculatorFragment extends Fragment {
             lastPressed.set(ButtonTypes.DN);
             // disable other dice buttons, operators, filters, and roll; enable numbers (except zero)
             enableButtons(simpleCalc);
-            disableButtons(simpleDice, dNArray, operators, filters, rollArray);
+            disableButtons(simpleDice, dNArray, operators, filters, modifiers, rollArray);
             calc0.setEnabled(false); // No dN starting with zero
             // Update the preview
             previewText.append("d");
@@ -230,8 +265,21 @@ public class AdvancedCalculatorFragment extends Fragment {
                     isDN.set(false);
                 } else if (isGroupFilter.get()) {
                     // Finalize the filter
-                    terms.get(terms.size()-1).addFilter(DiceGroup.newFilterFromType(groupFilterType.get(), modifier.get()));
+                    terms.get(terms.size() - 1).addFilter(DiceGroup.newFilterFromType(groupFilterType.get(), modifier.get()));
                     isGroupFilter.set(false);
+                } else if (isPerDieModifier.get()) {
+                    switch (perDieModifierType.get()) {
+                        case MIN:
+                            terms.get(terms.size()-1).addModifier(DiceGroup.newMinModifier(modifier.get()));
+                            break;
+                        case MAX:
+                            terms.get(terms.size()-1).addModifier(DiceGroup.newMaxModifier(modifier.get()));
+                            break;
+                        default:
+                            terms.get(terms.size()-1).addModifier(roll -> roll);
+                            break;
+                    }
+                    isPerDieModifier.set(false);
                 } else if (lastPressed.get() == ButtonTypes.NUMBER) {
                     // If it's not a dN or a filter, it must be a static modifier
                     terms.add(new DiceGroup(0, modifier.get()));
@@ -241,7 +289,7 @@ public class AdvancedCalculatorFragment extends Fragment {
                 lastPressed.set(ButtonTypes.OPERATION);
                 // disable roll, operators, and filters; enable dice buttons and numbers
                 enableButtons(simpleDice, dNArray, simpleCalc);
-                disableButtons(rollArray, operators, filters);
+                disableButtons(rollArray, operators, filters, modifiers);
                 // Update the preview
                 previewText.append(((TextView)buttonView).getText());
                 TextView preview = view.findViewById(R.id.advcalc_preview);
@@ -261,6 +309,21 @@ public class AdvancedCalculatorFragment extends Fragment {
                 if (isGroupFilter.get()) {
                     terms.get(terms.size()-1).addFilter(DiceGroup.newFilterFromType(groupFilterType.get(), modifier.get()));
                 }
+                // Finalize the per-die roll modifier
+                if (isPerDieModifier.get()) {
+                    switch (perDieModifierType.get()) {
+                        case MIN:
+                            terms.get(terms.size()-1).addModifier(DiceGroup.newMinModifier(modifier.get()));
+                            break;
+                        case MAX:
+                            terms.get(terms.size()-1).addModifier(DiceGroup.newMaxModifier(modifier.get()));
+                            break;
+                        default:
+                            terms.get(terms.size()-1).addModifier(roll -> roll);
+                            break;
+                    }
+                    isPerDieModifier.set(false);
+                }
                 // Modifier will now track the number of dice to keep/drop
                 modifier.set(1);
                 isGroupFilter.set(true);
@@ -276,16 +339,97 @@ public class AdvancedCalculatorFragment extends Fragment {
             });
         }
 
+        calc_min.setOnClickListener(buttonView -> {
+            // Save the dN since the modifier is now finalized
+            if (isDN.get()) {
+                terms.get(terms.size()-1).setMaxVal(modifier.get());
+                isDN.set(false);
+            }
+            // Finalize the previous filter
+            if (isGroupFilter.get()) {
+                terms.get(terms.size()-1).addFilter(DiceGroup.newFilterFromType(groupFilterType.get(), modifier.get()));
+                isGroupFilter.set(false);
+            }
+            // Finalize the per-die roll modifier
+            if (isPerDieModifier.get()) {
+                switch (perDieModifierType.get()) {
+                    case MIN:
+                        terms.get(terms.size()-1).addModifier(DiceGroup.newMinModifier(modifier.get()));
+                        break;
+                    case MAX:
+                        terms.get(terms.size()-1).addModifier(DiceGroup.newMaxModifier(modifier.get()));
+                        break;
+                    default:
+                        terms.get(terms.size()-1).addModifier(roll -> roll);
+                        break;
+                }
+            }
+            // Modifier will now track the number of dice to keep/drop
+            modifier.set(1);
+            isPerDieModifier.set(true);
+            perDieModifierType.set(DiceGroup.Modifier.Type.MIN);
+            lastPressed.set(ButtonTypes.FILTER);
+            // disable everything except numbers
+            enableButtons(simpleCalc);
+            disableButtons(simpleDice, dNArray, rollArray, operators, filters);
+            calc0.setEnabled(false);
+            // Update the preview
+            previewText.append(((TextView)buttonView).getText());
+            TextView preview = view.findViewById(R.id.advcalc_preview);
+            preview.setText(previewText.toString());
+        });
+
+        calc_max.setOnClickListener(buttonView -> {
+            // Save the dN since the modifier is now finalized
+            if (isDN.get()) {
+                terms.get(terms.size()-1).setMaxVal(modifier.get());
+                isDN.set(false);
+            }
+            // Finalize the previous filter
+            if (isGroupFilter.get()) {
+                terms.get(terms.size()-1).addFilter(DiceGroup.newFilterFromType(groupFilterType.get(), modifier.get()));
+                isGroupFilter.set(false);
+            }
+            // Finalize the per-die roll modifier
+            if (isPerDieModifier.get()) {
+                switch (perDieModifierType.get()) {
+                    case MIN:
+                        terms.get(terms.size()-1).addModifier(DiceGroup.newMinModifier(modifier.get()));
+                        break;
+                    case MAX:
+                        terms.get(terms.size()-1).addModifier(DiceGroup.newMaxModifier(modifier.get()));
+                        break;
+                    default:
+                        terms.get(terms.size()-1).addModifier(roll -> roll);
+                        break;
+                }
+            }
+            // Modifier will now track the number of dice to keep/drop
+            modifier.set(1);
+            isPerDieModifier.set(true);
+            perDieModifierType.set(DiceGroup.Modifier.Type.MAX);
+            lastPressed.set(ButtonTypes.FILTER);
+            // disable everything except numbers
+            enableButtons(simpleCalc);
+            disableButtons(simpleDice, dNArray, rollArray, operators, filters, modifiers);
+            calc0.setEnabled(false);
+            // Update the preview
+            previewText.append(((TextView)buttonView).getText());
+            TextView preview = view.findViewById(R.id.advcalc_preview);
+            preview.setText(previewText.toString());
+        });
+
         // Clear the list completely (and replace with empty term)
         calc_clear.setOnClickListener(buttonView -> {
             terms.clear();
             isDN.set(false);
             isGroupFilter.set(false);
+            isPerDieModifier.set(false);
             lastPressed.set(ButtonTypes.OPERATION); // Should be fine as a default value
             modifier.set(1);
             // enable all buttons except filters, roll, and plus
             enableButtons(simpleDice, dNArray, simpleCalc, operators);
-            disableButtons(rollArray, filters);
+            disableButtons(rollArray, filters, modifiers);
             calc_plus.setEnabled(false);
             // Update the preview
             previewText = new StringBuilder();
@@ -298,7 +442,7 @@ public class AdvancedCalculatorFragment extends Fragment {
                 if (isDN.get()) {
                     // finish the current dN
                     terms.get(terms.size() - 1).setMaxVal(modifier.get());
-                } else if (!isGroupFilter.get()) {
+                } else if (!isGroupFilter.get() && !isPerDieModifier.get()) {
                     // finish the current static mod
                     terms.add(new DiceGroup(0, modifier.get()));
                 }
@@ -306,6 +450,19 @@ public class AdvancedCalculatorFragment extends Fragment {
             // Finalize the filter if it's at the end
             if (isGroupFilter.get()) {
                 terms.get(terms.size()-1).addFilter(DiceGroup.newFilterFromType(groupFilterType.get(), modifier.get()));
+            }
+            if (isPerDieModifier.get()) {
+                switch (perDieModifierType.get()) {
+                    case MIN:
+                        terms.get(terms.size()-1).addModifier(DiceGroup.newMinModifier(modifier.get()));
+                        break;
+                    case MAX:
+                        terms.get(terms.size()-1).addModifier(DiceGroup.newMaxModifier(modifier.get()));
+                        break;
+                    default:
+                        terms.get(terms.size()-1).addModifier(roll -> roll);
+                        break;
+                }
             }
             if ((isDN.get() && lastPressed.get() != ButtonTypes.NUMBER) || lastPressed.get() == ButtonTypes.OPERATION) { // Should never occur if buttons are enabled correctly
                 Snackbar.make(view, "Invalid Dice Code", Snackbar.LENGTH_SHORT).show();
@@ -369,13 +526,17 @@ public class AdvancedCalculatorFragment extends Fragment {
                 if (isDN.get()) {
                     // reset the dN. Not necessary, but it may help later for parsing
                     terms.get(terms.size() - 1).setMaxVal(0);
-                } else if (!isGroupFilter.get()) {
+                } else if (!isGroupFilter.get() && !isPerDieModifier.get()) {
                     terms.remove(terms.size() - 1);
                 }
             }
             // Remove the (potentially unfinished) filter if it's at the end
             if (isGroupFilter.get()) {
                 terms.get(terms.size() - 1).removeLastFilter();
+            }
+            // Remove the (potentially unfinished) per-die modifier if it's at the end
+            if (isPerDieModifier.get()) {
+                terms.get(terms.size() - 1).removeLastModifier();
             }
         });
 
