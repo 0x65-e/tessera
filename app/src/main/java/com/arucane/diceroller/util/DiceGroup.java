@@ -11,7 +11,7 @@ import java.util.List;
 public class DiceGroup {
     int numRolls, maxVal;
     List<Filter> filters;
-    List<Modifier> modifiers;
+    List<Mutator> mutators;
 
     /**
      * Create a new group of dice. To subtract values, use a negative numRolls parameter. Negative
@@ -24,7 +24,7 @@ public class DiceGroup {
         this.numRolls = numRolls;
         this.maxVal = maxVal;
         this.filters = new ArrayList<>();
-        this.modifiers = new ArrayList<>();
+        this.mutators = new ArrayList<>();
     }
 
     /**
@@ -238,32 +238,32 @@ public class DiceGroup {
     }
 
     ////////////////////////////
-    // Individual Modifiers
+    // Individual Mutators
     ////////////////////////////
 
     /**
-     * Add a modifier to be run on every die roll in this DiceGroup. Modifiers are run in the order they are added.
-     * @param mod Modifier to apply to all roll results
+     * Add a mutator to be run on every die roll in this DiceGroup. Mutators are run in the order they are added.
+     * @param mut Mutator to apply to all roll results
      */
-    public void addModifier(Modifier mod) {
-        modifiers.add(mod);
+    public void addMutator(Mutator mut) {
+        mutators.add(mut);
     }
 
     /**
-     * Remove the last Modifier added to this Dice Group
+     * Remove the last Mutator added to this Dice Group
      */
-    public void removeLastModifier() {
-        if (!modifiers.isEmpty()) modifiers.remove(modifiers.size()-1);
+    public void removeLastMutator() {
+        if (!mutators.isEmpty()) mutators.remove(mutators.size()-1);
     }
 
     /**
-     * Apply all modifiers added to this DiceGroup to the raw roll results and return the modified result
-     * @param roll Raw result to modify
-     * @return Possibly modified valid roll result, or -1 if result rejected
+     * Apply all mutators added to this DiceGroup to the raw roll results and return the mutated result
+     * @param roll Raw result to mutate
+     * @return Possibly mutated valid roll result, or -1 if result rejected
      */
-    public int applyModifiers(int roll) {
-        for (Modifier mod : modifiers) {
-            roll = mod.accept(roll);
+    public int applyMutators(int roll) {
+        for (Mutator mut : mutators) {
+            roll = mut.accept(roll);
             if (roll == -1)
                 return roll; // break early for a rejected filter
         }
@@ -273,26 +273,26 @@ public class DiceGroup {
     /**
      * Sets the minimum value the die can roll
      * @param min Minimum value
-     * @return Modifier to apply to a DiceGroup
+     * @return Mutator to apply to a DiceGroup
      */
-    public static Modifier newMinModifier(int min) {
+    public static Mutator newMinMutator(int min) {
         return roll -> Math.max(roll, min);
     }
 
     /**
      * Sets the maximum value the die can roll
      * @param max Maximum value
-     * @return Modifier to apply to a DiceGroup
+     * @return Mutator to apply to a DiceGroup
      */
-    public static Modifier newMaxModifier(int max) {
+    public static Mutator newMaxMutator(int max) {
         return roll -> Math.min(roll, max);
     }
 
-    public interface Modifier {
+    public interface Mutator {
         /**
-         * Accepts or rejects a given roll, possibly after modifying
+         * Accepts or rejects a given roll, possibly after mutating
          * @param roll Initial roll result
-         * @return Possibly modified accepted value, or -1 for an unacceptable value
+         * @return Possibly mutated accepted value, or -1 for an unacceptable value
          */
         int accept(int roll);
 

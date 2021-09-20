@@ -27,7 +27,7 @@ public final class RollEngine {
         int result;
         if (dice.getMaxVal() != 0) for (int i = 0; i < Math.abs(dice.getNumRolls()); i++) {
             //noinspection StatementWithEmptyBody
-            while ((result = dice.applyModifiers(roll(dice.getMaxVal()))) == -1); // This could get trapped in an infinite loop if the user isn't careful
+            while ((result = dice.applyMutators(roll(dice.getMaxVal()))) == -1); // This could get trapped in an infinite loop if the user isn't careful
             results.add(result);
         }
         // Remember to apply any relevant filters the DiceGroup requires
